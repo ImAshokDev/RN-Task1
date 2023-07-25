@@ -116,9 +116,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
+    // backgroundColor: 'pink',
+    // display: 'flex',
+    // flexDirection: 'row',
+    // alignItems: 'center',
   },
   formView: {
     paddingVertical: 20,
+    marginTop: 50,
   },
   title: {
     fontSize: 20,
