@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 
 import {navigationRef} from './NavProps';
@@ -9,11 +9,11 @@ import {BottomTabs} from './StackNavigation';
 export const AuthContext = React.createContext();
 
 export function AppNavigations() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
   return (
     <NavigationContainer ref={navigationRef}>
-      {/* {isAuthenticated === false ? <BottomTabs /> : <AuthNavigator />} */}
-
-      <BottomTabs />
+      {isAuthenticated === true ? <BottomTabs /> : <AuthNavigator />}
     </NavigationContainer>
   );
 }

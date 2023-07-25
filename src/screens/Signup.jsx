@@ -72,10 +72,21 @@ export function Signup() {
       phoneNumberErr = 'Phone Number is required';
     }
 
-    if (!values?.createPassword) {
+    if (values?.createPassword) {
+      if (values?.createPassword?.length < 8) {
+        createPasswordErr = `Must be atleast 8 characters!`;
+      }
+    } else {
       createPasswordErr = 'Create password is required';
     }
-    if (!values?.confirmPassword) {
+
+    if (values?.confirmPassword) {
+      if (values?.confirmPassword?.length < 8) {
+        confirmPasswordErr = `Must be atleast 8 characters!`;
+      } else if (values?.createPassword !== values?.confirmPassword) {
+        confirmPasswordErr = `Password doesn't Match`;
+      }
+    } else {
       confirmPasswordErr = 'Confirm password is required';
     }
 
@@ -141,14 +152,14 @@ export function Signup() {
           />
           <TextField
             label={'Create password'}
-            placeholder="Create password"
+            placeholder="Must be 8 characters or more"
             value={values.createPassword}
             onChangeText={val => onChange(val, 'createPassword')}
             errorLabel={errorValues?.createPasswordError}
           />
           <TextField
             label={'Confirm password'}
-            placeholder="Confirm password"
+            placeholder="Must be 8 characters or more"
             value={values.confirmPassword}
             onChangeText={val => onChange(val, 'confirmPassword')}
             errorLabel={errorValues?.confirmPasswordError}
