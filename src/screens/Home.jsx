@@ -28,24 +28,21 @@ export function HomeScreen() {
         <FlatList
           data={data?.feed?.entry}
           renderItem={({item, index}) => {
-            console.log(
-              'item........................',
-              //   item?.category?.attributes?.['im:id'],
-              //   item?.['im:name']?.label,
-              item?.['im:image'][0]?.label,
-            );
+            // console.log(
+            //   'item........................',
+            //   //   item?.category?.attributes?.['im:id'],
+            //   //   item?.['im:name']?.label,
+            // //   item?.['im:image'][0]?.label,
+            // );
             return (
-              <View
-                key={`${item?.category?.attributes?.['im:id']} +
-                  ${item?.['im:name']?.label}`}
-                style={styles.cardView}>
+              <View key={index} style={styles.cardView}>
                 <Text style={styles.text1}>{item?.['im:name']?.label}</Text>
 
                 <View style={styles.galleryView}>
-                  {item?.['im:image']?.map((imgItem, index) => {
-                    console.log('img', imgItem?.attributes?.height);
+                  {item?.['im:image']?.map((imgItem, index2) => {
                     return (
                       <Image
+                        key={index2}
                         source={{uri: imgItem.label}}
                         alt="image"
                         style={[styles.imgStyle, ,]}

@@ -8,18 +8,11 @@ import {Text, View} from 'react-native';
 import Entypo from 'react-native-vector-icons/Entypo';
 
 import {HomeScreen} from '../screens/Home';
+import {Profile} from '../screens/Profile';
 
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
-
-function Profile() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{color: '#000'}}>Profile </Text>
-    </View>
-  );
-}
 
 function PasswordChange() {
   return (
@@ -32,7 +25,13 @@ function PasswordChange() {
 function ProfileScreen() {
   return (
     <Stack.Navigator>
-      <Stack.Screen name="ProfileScreen" component={Profile} />
+      <Stack.Screen
+        name="ProfileScreen"
+        component={Profile}
+        options={{
+          headerShown: false,
+        }}
+      />
       <Stack.Screen name="PasswordChange" component={PasswordChange} />
     </Stack.Navigator>
   );
