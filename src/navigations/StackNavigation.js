@@ -3,24 +3,16 @@ import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Text, View} from 'react-native';
 
 import Entypo from 'react-native-vector-icons/Entypo';
 
 import {HomeScreen} from '../screens/Home';
 import {Profile} from '../screens/Profile';
+import {ChangePassword} from '../screens/ChangePassword';
 
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
-
-function PasswordChange() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{color: '#000'}}>Home screen</Text>
-    </View>
-  );
-}
 
 function ProfileScreen() {
   return (
@@ -29,10 +21,10 @@ function ProfileScreen() {
         name="ProfileScreen"
         component={Profile}
         options={{
-          headerShown: false,
+          headerShown: true,
         }}
       />
-      <Stack.Screen name="PasswordChange" component={PasswordChange} />
+      <Stack.Screen name="ChangePassword" component={ChangePassword} />
     </Stack.Navigator>
   );
 }
@@ -53,7 +45,13 @@ export function BottomTabs() {
         // }}
       />
 
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen
+        name="Profile"
+        component={ProfileScreen}
+        options={{
+          headerShown: false,
+        }}
+      />
     </Tab.Navigator>
   );
 }

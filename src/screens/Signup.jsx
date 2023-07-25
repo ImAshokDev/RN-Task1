@@ -6,10 +6,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 
 import {TextField} from '../components/TextField';
 
 export function Signup() {
+  const navigation = useNavigation();
+
   const initialState = {
     name: '',
     email: '',
@@ -160,7 +163,10 @@ export function Signup() {
 
           <View style={styles.infoView}>
             <Text style={styles.text1}>Already have an account?</Text>
-            <TouchableOpacity activeOpacity={0.4} style={styles.linkBtn}>
+            <TouchableOpacity
+              activeOpacity={0.4}
+              onPress={() => navigation.navigate('Login')}
+              style={styles.linkBtn}>
               <Text style={styles.linkBtnText}>Login</Text>
             </TouchableOpacity>
           </View>
@@ -177,6 +183,7 @@ const styles = StyleSheet.create({
   },
   formView: {
     paddingVertical: 20,
+    marginTop: 50,
   },
   title: {
     fontSize: 20,

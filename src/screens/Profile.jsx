@@ -1,3 +1,4 @@
+import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
 import {
   FlatList,
@@ -9,11 +10,15 @@ import {
 } from 'react-native';
 
 export function Profile() {
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <TouchableOpacity activeOpacity={0.5} style={styles.touchBtn}>
-          <Text style={styles.text1}>Password Change</Text>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={() => navigation.navigate('ChangePassword')}
+          style={styles.touchBtn}>
+          <Text style={styles.text1}>Change Password</Text>
         </TouchableOpacity>
 
         <TouchableOpacity activeOpacity={0.5} style={styles.touchBtn}>
