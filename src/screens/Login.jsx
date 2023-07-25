@@ -9,21 +9,15 @@ import {
 
 import {TextField} from '../components/TextField';
 
-export function Signup() {
+export function Login() {
   const initialState = {
-    name: '',
     email: '',
-    phoneNumber: '',
-    createPassword: '',
-    confirmPassword: '',
+    password: '',
   };
 
   const initialErrorState = {
-    nameError: '',
     emailError: '',
-    phoneNumberError: '',
-    createPasswordError: '',
-    confirmPasswordError: '',
+    passwordError: '',
   };
 
   const [values, setValues] = useState(initialState);
@@ -37,15 +31,8 @@ export function Signup() {
   };
 
   const isValidate = () => {
-    let nameErr = '';
     let emailErr = '';
-    let phoneNumberErr = '';
-    let createPasswordErr = '';
-    let confirmPasswordErr = '';
-
-    if (!values?.name) {
-      nameErr = 'Name is required';
-    }
+    let passwordErr = '';
 
     const reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
@@ -57,39 +44,15 @@ export function Signup() {
       emailErr = 'E-mail is required';
     }
 
-    const numberPattern = new RegExp(
-      /^([+]?[\s0-9]+)?(\d{3}|[(]?[0-9]+[)])?([-]?[\s]?[0-9])+$/i,
-    );
-
-    if (values?.phoneNumber) {
-      if (!numberPattern.test(values?.phoneNumber)) {
-        phoneNumberErr = 'Enter valid phone number';
-      }
-    } else {
-      phoneNumberErr = 'Phone Number is required';
+    if (!values?.password) {
+      passwordErr = 'Create password is required';
     }
 
-    if (!values?.createPassword) {
-      createPasswordErr = 'Create password is required';
-    }
-    if (!values?.confirmPassword) {
-      confirmPasswordErr = 'Confirm password is required';
-    }
-
-    if (
-      nameErr ||
-      emailErr ||
-      phoneNumberErr ||
-      createPasswordErr ||
-      confirmPasswordErr
-    ) {
+    if (emailErr || passwordErr) {
       setErrorValues({
         ...errorValues,
-        nameError: nameErr,
         emailError: emailErr,
-        phoneNumberError: phoneNumberErr,
-        createPasswordError: createPasswordErr,
-        confirmPasswordError: confirmPasswordErr,
+        passwordError: passwordErr,
       });
       return false;
     }
@@ -112,15 +75,8 @@ export function Signup() {
         showsVerticalScrollIndicator={false}
         keyboardShouldPersistTaps={'handled'}>
         <View style={styles.formView}>
-          <Text style={styles.title}>Signup</Text>
+          <Text style={styles.title}>Login</Text>
 
-          <TextField
-            label={'Name'}
-            placeholder="Enter your Name"
-            value={values.name}
-            onChangeText={val => onChange(val, 'name')}
-            errorLabel={errorValues?.nameError}
-          />
           <TextField
             label={'E-mail'}
             placeholder="Enter your E-mail"
@@ -128,40 +84,26 @@ export function Signup() {
             onChangeText={val => onChange(val, 'email')}
             errorLabel={errorValues?.emailError}
           />
+
           <TextField
-            label={'Phone Number'}
-            placeholder="Enter Phone Number"
-            keyboardType={'number-pad'}
-            value={values.phoneNumber}
-            onChangeText={val => onChange(val, 'phoneNumber')}
-            errorLabel={errorValues?.phoneNumberError}
-          />
-          <TextField
-            label={'Create password'}
-            placeholder="Create password"
+            label={'Enter password'}
+            placeholder="Enter password"
             value={values.createPassword}
-            onChangeText={val => onChange(val, 'createPassword')}
-            errorLabel={errorValues?.createPasswordError}
-          />
-          <TextField
-            label={'Confirm password'}
-            placeholder="Confirm password"
-            value={values.confirmPassword}
-            onChangeText={val => onChange(val, 'confirmPassword')}
-            errorLabel={errorValues?.confirmPasswordError}
+            onChangeText={val => onChange(val, 'password')}
+            errorLabel={errorValues?.passwordError}
           />
 
           <TouchableOpacity
             activeOpacity={0.6}
             onPress={handleSubmit}
             style={styles.btn}>
-            <Text style={styles.btnText}>Submit</Text>
+            <Text style={styles.btnText}>Login</Text>
           </TouchableOpacity>
 
           <View style={styles.infoView}>
-            <Text style={styles.text1}>Already have an account?</Text>
+            <Text style={styles.text1}>Create New Account?</Text>
             <TouchableOpacity activeOpacity={0.4} style={styles.linkBtn}>
-              <Text style={styles.linkBtnText}>Login</Text>
+              <Text style={styles.linkBtnText}>Signup</Text>
             </TouchableOpacity>
           </View>
         </View>
