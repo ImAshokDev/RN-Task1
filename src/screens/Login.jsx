@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 20,
-    color: '#000000',
+    color: '#1E293B',
     fontWeight: 'bold',
     marginVertical: 20,
   },
@@ -157,7 +157,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     fontSize: 16,
-    color: '#000000',
+    color: '#1E293B',
   },
   linkBtn: {
     marginLeft: 10,

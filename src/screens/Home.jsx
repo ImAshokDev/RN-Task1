@@ -1,24 +1,62 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
-  ScrollView,
+  FlatList,
+  Image,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from 'react-native';
 
-export function Home() {
-  const initialState = {
-    email: '',
-    password: '',
-  };
+export function HomeScreen() {
+  const [data, setData] = useState('');
 
-  const [values, setValues] = useState('');
+  function fetchData() {
+    fetch('https://itunes.apple.com/in/rss/topalbums/limit=25/json')
+      .then(res => res.json())
+      .then(resData => setData(resData))
+      .catch(err => console.log('fet error......', err));
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <View style={styles.container}>
-      <View style={styles.formView}>
-        <Text style={styles.title}>Home Screen</Text>
+      <View style={styles.content}>
+        <FlatList
+          data={data?.feed?.entry}
+          renderItem={({item, index}) => {
+            console.log(
+              'item........................',
+              //   item?.category?.attributes?.['im:id'],
+              //   item?.['im:name']?.label,
+              item?.['im:image'][0]?.label,
+            );
+            return (
+              <View
+                key={`${item?.category?.attributes?.['im:id']} +
+                  ${item?.['im:name']?.label}`}
+                style={styles.cardView}>
+                <Text style={styles.text1}>{item?.['im:name']?.label}</Text>
+
+                <View style={styles.galleryView}>
+                  {item?.['im:image']?.map((imgItem, index) => {
+                    console.log('img', imgItem?.attributes?.height);
+                    return (
+                      <Image
+                        source={{uri: imgItem.label}}
+                        alt="image"
+                        style={[styles.imgStyle, ,]}
+                      />
+                    );
+                  })}
+                </View>
+              </View>
+            );
+          }}
+        />
       </View>
     </View>
   );
@@ -28,20 +66,38 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    // backgroundColor: 'pink',
+    backgroundColor: '#F5F9FB',
     // display: 'flex',
     // flexDirection: 'row',
     // alignItems: 'center',
   },
-  formView: {
-    paddingVertical: 20,
-    marginTop: 50,
+  content: {},
+
+  cardView: {
+    backgroundColor: '#fff',
+    padding: 16,
+    marginVertical: 10,
+    borderRadius: 8,
+    elevation: 3,
   },
-  title: {
-    fontSize: 20,
-    color: '#000000',
+
+  text1: {
+    fontSize: 16,
+    color: '#1E293B',
     fontWeight: 'bold',
-    marginVertical: 20,
+    marginBottom: 10,
+  },
+
+  galleryView: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingVertical: 10,
+  },
+
+  imgStyle: {
+    width: 110,
+    height: 110,
   },
 
   // buttons
@@ -57,27 +113,6 @@ const styles = StyleSheet.create({
   btnText: {
     fontSize: 18,
     color: '#fff',
-    fontWeight: 'bold',
-  },
-
-  infoView: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 10,
-  },
-  text1: {
-    fontSize: 16,
-    color: '#000000',
-  },
-  linkBtn: {
-    marginLeft: 10,
-  },
-
-  linkBtnText: {
-    fontSize: 18,
-    color: '#0079FF',
     fontWeight: 'bold',
   },
 });

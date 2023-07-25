@@ -7,17 +7,11 @@ import {Text, View} from 'react-native';
 
 import Entypo from 'react-native-vector-icons/Entypo';
 
+import {HomeScreen} from '../screens/Home';
+
 const Tab = createBottomTabNavigator();
 
 const Stack = createStackNavigator();
-
-function HomeScreen() {
-  return (
-    <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-      <Text style={{color: '#000'}}>Home screen</Text>
-    </View>
-  );
-}
 
 function Profile() {
   return (
@@ -46,7 +40,10 @@ function ProfileScreen() {
 
 export function BottomTabs() {
   return (
-    <Tab.Navigator initialRouteName="Home" screenOptions={{headerShown: false}}>
+    <Tab.Navigator
+      initialRouteName="Home"
+      //  screenOptions={{headerShown: false}}
+    >
       <Tab.Screen
         name="Home"
         component={HomeScreen}
