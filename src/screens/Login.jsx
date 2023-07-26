@@ -78,7 +78,7 @@ export function Login() {
       if (!userDetails) {
         setErrorValues({
           ...errorValues,
-          emailError: `E-mail does not exist`,
+          emailError: `This email address does not exists`,
         });
       }
     } catch (err) {
@@ -94,10 +94,10 @@ export function Login() {
 
     if (values?.email) {
       if (reg.test(values?.email) === false) {
-        emailErr = 'Invalid E-mail';
+        emailErr = 'Invalid email';
       }
     } else {
-      emailErr = 'E-mail is required';
+      emailErr = 'Email is required';
     }
 
     if (!values?.password) {

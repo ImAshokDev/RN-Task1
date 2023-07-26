@@ -47,8 +47,8 @@ export const storeUserInfo = async value => {
         ) {
           oldUserFlag = true;
           alertMessage(
-            'Account exist with this E-mail',
-            'Signup with another E-mail',
+            'This email address already exists',
+            'Signup with another email address',
           );
           return false;
         }

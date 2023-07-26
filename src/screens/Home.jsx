@@ -76,6 +76,12 @@ export function HomeScreen() {
                 </Text>
               </View>
               <View style={styles.textRowView}>
+                <Text style={[styles.textLeft]}>Entries Per Page: </Text>
+                <Text style={[styles.textLeft, styles.textRight]}>
+                  {cardsPerPage}
+                </Text>
+              </View>
+              <View style={styles.textRowView}>
                 <Text style={[styles.textLeft]}>No of Pages: </Text>
                 <Text style={[styles.textLeft, styles.textRight]}>
                   {noOfPages}
@@ -216,11 +222,14 @@ const styles = StyleSheet.create({
   textRowView: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 6,
   },
   textLeft: {
     fontSize: 16,
     color: '#64748B',
     fontWeight: 'bold',
+    width: 140,
   },
   textRight: {
     color: '#1E293B',
