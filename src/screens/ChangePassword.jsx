@@ -7,16 +7,13 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {TextField} from '../components/TextField';
-import {useDispatch, useSelector} from 'react-redux';
-import {
-  getUserInfo,
-  storeMyInfo,
-  storeUserInfo,
-  storeUserInfo2,
-} from '../utils/localStorage';
-import {setIsAuthenticated, setUserInfo} from '../store/userInfo';
+
+import {getUserInfo, storeMyInfo, storeUserInfo2} from '../utils/localStorage';
+
+import {setUserInfo} from '../store/userInfo';
 
 export function ChangePassword() {
   const dispatch = useDispatch();
@@ -181,9 +178,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     backgroundColor: '#fff',
-    // display: 'flex',
-    // flexDirection: 'row',
-    // alignItems: 'center',
   },
   formView: {
     paddingVertical: 20,

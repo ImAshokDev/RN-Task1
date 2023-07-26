@@ -3,7 +3,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {navigationRef} from './NavProps';
-import {getMyInfo, getMySignupStatus, getUserInfo} from '../utils/localStorage';
+import {getMyInfo, getMySignupStatus} from '../utils/localStorage';
 
 import {AuthNavigator} from './AuthNavigation';
 import {MainNavigator} from './StackNavigation';
@@ -18,8 +18,6 @@ export function AppNavigations() {
   const {isAuthenticated} = useSelector(state => state.userInfo);
 
   async function callLocalStore() {
-    const alluserArray = await getUserInfo();
-    console.log('alluserArray....2', alluserArray);
     const myInfo = await getMyInfo();
     const signupStatus = await getMySignupStatus();
 

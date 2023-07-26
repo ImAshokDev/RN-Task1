@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {
   StyleSheet,
@@ -75,9 +75,6 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     backgroundColor: '#F5F9FB',
-    // display: 'flex',
-    // flexDirection: 'row',
-    // alignItems: 'center',
   },
   content: {
     flex: 1,
@@ -87,7 +84,7 @@ const styles = StyleSheet.create({
   // profileView
   title: {
     fontSize: 18,
-    color: '#1E293B',
+    color: '#042232',
     fontWeight: 'bold',
     marginBottom: 10,
   },
@@ -112,8 +109,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#B91C1C',
     padding: 12,
     marginVertical: 16,
-    // position: 'absolute',
-    // bottom: 20,
+
     display: 'flex',
     alignSelf: 'center',
     alignItems: 'center',
