@@ -1,16 +1,23 @@
-import {useNavigation} from '@react-navigation/native';
 import React, {useEffect, useState} from 'react';
-import {
-  FlatList,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+
+import {setIsAuthenticated, setUserInfo} from '../store/userInfo';
 
 export function Profile() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
+  const {userInfo} = useSelector(state => state.userInfo);
+
+  console.log('profile......userInfo.....', userInfo);
+
+  const handleLogout = () => {
+    dispatch(setUserInfo(null));
+    dispatch(setIsAuthenticated(false));
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.content}>
@@ -25,7 +32,10 @@ export function Profile() {
           <Text style={styles.text1}>Delete Account</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity activeOpacity={0.5} style={styles.logoutBtn}>
+        <TouchableOpacity
+          activeOpacity={0.5}
+          onPress={handleLogout}
+          style={styles.logoutBtn}>
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
       </View>

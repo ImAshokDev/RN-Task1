@@ -2,9 +2,9 @@ import React from 'react';
 
 import {SafeAreaView, StatusBar, Text, useColorScheme} from 'react-native';
 
-import {Signup} from './src/screens/Signup';
-import {Login} from './src/screens/Login';
 import {AppNavigations} from './src/navigations/Index';
+import {Provider} from 'react-redux';
+import store from './src/store/store';
 
 function App() {
   const isDarkMode = useColorScheme() === 'dark';
@@ -12,10 +12,10 @@ function App() {
   return (
     <SafeAreaView style={{flex: 1, backgroundColor: '#ffffff'}}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      {/* <Text style={{color: '#000'}}>Home Screen</Text> */}
-      {/* <Signup /> */}
-      {/* <Login /> */}
-      <AppNavigations />
+
+      <Provider store={store}>
+        <AppNavigations />
+      </Provider>
     </SafeAreaView>
   );
 }

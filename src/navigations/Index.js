@@ -1,19 +1,22 @@
 import React, {useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
+import {useSelector} from 'react-redux';
 
 import {navigationRef} from './NavProps';
 
 import {AuthNavigator} from './AuthNavigation';
-import {BottomTabs} from './StackNavigation';
+import {MainNavigator} from './StackNavigation';
 
 export const AuthContext = React.createContext();
 
 export function AppNavigations() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const {isAuthenticated} = useSelector(state => state.userInfo);
+
+  console.log('isAuthenticated........', isAuthenticated);
 
   return (
     <NavigationContainer ref={navigationRef}>
-      {isAuthenticated === true ? <BottomTabs /> : <AuthNavigator />}
+      {isAuthenticated === true ? <MainNavigator /> : <AuthNavigator />}
     </NavigationContainer>
   );
 }

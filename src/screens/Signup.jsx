@@ -7,11 +7,16 @@ import {
   View,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch, useSelector} from 'react-redux';
 
 import {TextField} from '../components/TextField';
 
+import {storeUserInfo} from '../utils/localStorage';
+import {setIsAuthenticated, setUserInfo} from '../store/userInfo';
+
 export function Signup() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
 
   const initialState = {
     name: '',
@@ -31,6 +36,10 @@ export function Signup() {
 
   const [values, setValues] = useState(initialState);
   const [errorValues, setErrorValues] = useState(initialErrorState);
+
+  const {userInfo} = useSelector(state => state.userInfo);
+
+  console.log('userInfo.....', userInfo);
 
   const onChange = (val, name) => {
     setValues({
@@ -114,7 +123,13 @@ export function Signup() {
 
   const handleSubmit = () => {
     if (isValidate()) {
-      console.log('validation done', values);
+      dispatch(setUserInfo(values));
+      dispatch(setIsAuthenticated(true));
+      // storeUserInfo(values);
+
+      // navigation.navigate('MainScreen');
+
+      // console.log('validation done', values);
     } else {
       console.log('validation error.....', values);
     }
