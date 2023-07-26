@@ -1,6 +1,12 @@
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  ToastAndroid,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
 
 import {setIsAuthenticated, setUserInfo} from '../store/userInfo';
@@ -13,12 +19,19 @@ export function Profile() {
 
   const {userInfo} = useSelector(state => state.userInfo);
 
-  console.log('profile......userInfo.....', userInfo);
+  const toastMessage = () => {
+    ToastAndroid.showWithGravity(
+      'Logout Successful!',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+  };
 
   const handleLogout = () => {
     dispatch(setUserInfo(null));
     dispatch(setIsAuthenticated(false));
     removeMyInfo();
+    toastMessage();
   };
 
   return (
@@ -29,7 +42,12 @@ export function Profile() {
           <Text style={[styles.text1, {textTransform: 'capitalize'}]}>
             Name: {userInfo?.name}
           </Text>
-          <Text style={styles.text1}>E-mail: {userInfo?.email}</Text>
+          <Text style={[styles.text1]}>
+            E-mail:{' '}
+            <Text style={[{textTransform: 'lowercase'}]}>
+              {userInfo?.email}
+            </Text>
+          </Text>
           <Text style={styles.text1}>
             Phone Number: {userInfo?.phoneNumber}
           </Text>
@@ -39,10 +57,6 @@ export function Profile() {
           onPress={() => navigation.navigate('ChangePassword')}
           style={styles.touchBtn}>
           <Text style={styles.text1}>Change Password</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity activeOpacity={0.5} style={styles.touchBtn}>
-          <Text style={styles.text1}>Delete Account</Text>
         </TouchableOpacity>
 
         <TouchableOpacity

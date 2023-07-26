@@ -3,11 +3,12 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
-import {useDispatch, useSelector} from 'react-redux';
+import {useDispatch} from 'react-redux';
 
 import {TextField} from '../components/TextField';
 
@@ -40,10 +41,6 @@ export function Signup() {
 
   const [values, setValues] = useState(initialState);
   const [errorValues, setErrorValues] = useState(initialErrorState);
-
-  const {userInfo} = useSelector(state => state.userInfo);
-
-  console.log('userInfo.....', userInfo);
 
   const onChange = (val, name) => {
     setValues({
@@ -125,7 +122,16 @@ export function Signup() {
     return true;
   };
 
-  const handleSubmit = () => {
+  const toastMessage = () => {
+    ToastAndroid.showWithGravity(
+      'Signup Successful!',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+    setValues(initialState);
+  };
+
+  const handleSubmit = async () => {
     if (isValidate()) {
       const payload = {
         name: values.name,
@@ -134,13 +140,17 @@ export function Signup() {
         password: values.createPassword,
       };
 
-      dispatch(setUserInfo(payload));
-      dispatch(setIsAuthenticated(true));
-      dispatch(setMySignup('True'));
-      // toLocal DB
-      storeMySignupStatus('True');
-      storeUserInfo(payload);
-      storeMyInfo(payload);
+      const returnValue = await storeUserInfo(payload);
+
+      if (returnValue) {
+        dispatch(setUserInfo(payload));
+        dispatch(setIsAuthenticated(true));
+        dispatch(setMySignup('True'));
+
+        storeMySignupStatus('True');
+        storeMyInfo(payload);
+        toastMessage();
+      }
     }
   };
 

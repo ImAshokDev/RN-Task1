@@ -1,8 +1,8 @@
 import React from 'react';
 import {Alert} from 'react-native';
 
-export const alertMessage = () => {
-  Alert.alert('Login Success!', '', [
+export const alertMessage = (text1, text2) => {
+  Alert.alert(text1, text2, [
     // {
     //   text: 'Ask me later',
     //   onPress: () => console.log('Ask me later pressed'),

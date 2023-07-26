@@ -46,6 +46,9 @@ export function Login() {
       ToastAndroid.SHORT,
       ToastAndroid.CENTER,
     );
+
+    setValues(initialState);
+    setErrorValues(initialErrorState);
   };
 
   const getFromLocal = async () => {
@@ -62,9 +65,8 @@ export function Login() {
         if (userDetails?.password === values.password) {
           dispatch(setUserInfo(userDetails));
           dispatch(setIsAuthenticated(true));
-          toastMessage();
-          setErrorValues(initialErrorState);
           storeMyInfo(userDetails);
+          toastMessage();
         } else {
           setErrorValues({
             ...errorValues,

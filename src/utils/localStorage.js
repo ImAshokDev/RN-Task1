@@ -1,5 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Alert} from 'react-native';
+import {alertMessage} from './functions';
 
 // my Info Local DB
 export const storeMyInfo = async value => {
@@ -39,26 +40,58 @@ export const storeUserInfo = async value => {
     let parsedJson = jsonValue ? JSON.parse(jsonValue) : [];
 
     if (parsedJson) {
-      let prevFlag = false;
+      let oldUserFlag = false;
       for (let i = 0; i < parsedJson?.length; i++) {
         if (
           parsedJson[i]?.email?.toLowerCase() === value?.email?.toLowerCase()
         ) {
-          prevFlag = true;
-          Alert.alert(
-            'Account exist with this E-mail, Signup with another E-mail ',
+          oldUserFlag = true;
+          alertMessage(
+            'Account exist with this E-mail',
+            'Signup with another E-mail',
           );
+          return false;
+        }
+      }
+
+      if (!oldUserFlag) {
+        parsedJson = [...parsedJson, value];
+        const stringified = JSON.stringify(parsedJson);
+
+        await AsyncStorage.setItem('allUserInfo', stringified);
+
+        return true;
+      }
+    }
+  } catch (e) {
+    console.error('Unable to stored ' + 'allUserInfo');
+  }
+};
+
+export const storeUserInfo2 = async value => {
+  try {
+    const jsonValue = await AsyncStorage.getItem('allUserInfo');
+    let parsedJson = jsonValue ? JSON.parse(jsonValue) : [];
+
+    if (parsedJson) {
+      for (let i = 0; i < parsedJson?.length; i++) {
+        if (
+          parsedJson[i]?.email?.toLowerCase() === value?.email?.toLowerCase()
+        ) {
+          console.log('parsedJson[i]....', parsedJson[i]);
+          parsedJson[i] = {
+            ...parsedJson[i],
+            password: value?.password,
+          };
 
           break;
         }
       }
 
-      if (!prevFlag) {
-        parsedJson = [...parsedJson, value];
-        const stringified = JSON.stringify(parsedJson);
+      // parsedJson = [...parsedJson,];
+      const stringified = JSON.stringify(parsedJson);
 
-        await AsyncStorage.setItem('allUserInfo', stringified);
-      }
+      await AsyncStorage.setItem('allUserInfo', stringified);
     }
   } catch (e) {
     console.error('Unable to stored ' + 'allUserInfo');
@@ -70,7 +103,6 @@ export const getUserInfo = async () => {
     const jsonValue = await AsyncStorage.getItem('allUserInfo');
     const parsedJson = jsonValue ? JSON.parse(jsonValue) : [];
 
-    console.log('parsedJson.....get', parsedJson);
     return parsedJson != null ? parsedJson : [];
   } catch (e) {
     // error reading value

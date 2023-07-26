@@ -17,16 +17,15 @@ export function AppNavigations() {
 
   const {isAuthenticated} = useSelector(state => state.userInfo);
 
-  console.log('isAuthenticated.....', isAuthenticated);
-
   async function callLocalStore() {
+    const alluserArray = await getUserInfo();
+    console.log('alluserArray....2', alluserArray);
     const myInfo = await getMyInfo();
     const signupStatus = await getMySignupStatus();
 
     dispatch(setMySignup(signupStatus));
 
     if (myInfo) {
-      console.log('caaled....2', myInfo, signupStatus);
       dispatch(setUserInfo(myInfo));
       dispatch(setIsAuthenticated(true));
     }
