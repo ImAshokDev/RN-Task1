@@ -5,6 +5,8 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {setIsAuthenticated, setUserInfo} from '../store/userInfo';
 
+import {removeMyInfo} from '../utils/localStorage';
+
 export function Profile() {
   const navigation = useNavigation();
   const dispatch = useDispatch();
@@ -16,11 +18,22 @@ export function Profile() {
   const handleLogout = () => {
     dispatch(setUserInfo(null));
     dispatch(setIsAuthenticated(false));
+    removeMyInfo();
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.content}>
+        <View style={[styles.touchBtn, {backgroundColor: '#FFD89C'}]}>
+          <Text style={styles.title}>UserDetails: </Text>
+          <Text style={[styles.text1, {textTransform: 'capitalize'}]}>
+            Name: {userInfo?.name}
+          </Text>
+          <Text style={styles.text1}>E-mail: {userInfo?.email}</Text>
+          <Text style={styles.text1}>
+            Phone Number: {userInfo?.phoneNumber}
+          </Text>
+        </View>
         <TouchableOpacity
           activeOpacity={0.5}
           onPress={() => navigation.navigate('ChangePassword')}
@@ -55,6 +68,14 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingVertical: 16,
+  },
+
+  // profileView
+  title: {
+    fontSize: 18,
+    color: '#1E293B',
+    fontWeight: 'bold',
+    marginBottom: 10,
   },
 
   // buttons

@@ -3,15 +3,23 @@ import {
   ScrollView,
   StyleSheet,
   Text,
+  ToastAndroid,
   TouchableOpacity,
   View,
 } from 'react-native';
 import {useNavigation} from '@react-navigation/native';
+import {useDispatch} from 'react-redux';
 
 import {TextField} from '../components/TextField';
 
+import {getUserInfo, storeMyInfo} from '../utils/localStorage';
+
+import {setIsAuthenticated, setUserInfo} from '../store/userInfo';
+
 export function Login() {
   const navigation = useNavigation();
+  const dispatch = useDispatch();
+
   const initialState = {
     email: '',
     password: '',
@@ -32,6 +40,50 @@ export function Login() {
     });
   };
 
+  const toastMessage = () => {
+    ToastAndroid.showWithGravity(
+      'Login Successful!',
+      ToastAndroid.SHORT,
+      ToastAndroid.CENTER,
+    );
+  };
+
+  const getFromLocal = async () => {
+    setErrorValues(initialErrorState);
+
+    try {
+      const localUserArray = await getUserInfo();
+
+      const userDetails = localUserArray.find(
+        userObj => userObj?.email.toLowerCase() === values.email.toLowerCase(),
+      );
+
+      if (userDetails) {
+        if (userDetails?.password === values.password) {
+          dispatch(setUserInfo(userDetails));
+          dispatch(setIsAuthenticated(true));
+          toastMessage();
+          setErrorValues(initialErrorState);
+          storeMyInfo(userDetails);
+        } else {
+          setErrorValues({
+            ...errorValues,
+            passwordError: `Incorrect Password`,
+          });
+        }
+      }
+
+      if (!userDetails) {
+        setErrorValues({
+          ...errorValues,
+          emailError: `E-mail does not exist`,
+        });
+      }
+    } catch (err) {
+      console.log('local get error', err);
+    }
+  };
+
   const isValidate = () => {
     let emailErr = '';
     let passwordErr = '';
@@ -47,7 +99,7 @@ export function Login() {
     }
 
     if (!values?.password) {
-      passwordErr = 'Create password is required';
+      passwordErr = 'Password is required';
     }
 
     if (emailErr || passwordErr) {
@@ -65,9 +117,7 @@ export function Login() {
 
   const handleSubmit = () => {
     if (isValidate()) {
-      console.log('validation done', values);
-    } else {
-      console.log('validation error.....', values);
+      getFromLocal();
     }
   };
 
@@ -90,7 +140,7 @@ export function Login() {
           <TextField
             label={'Enter password'}
             placeholder="Enter password"
-            value={values.createPassword}
+            value={values.password}
             onChangeText={val => onChange(val, 'password')}
             errorLabel={errorValues?.passwordError}
           />
@@ -128,7 +178,7 @@ const styles = StyleSheet.create({
   },
   formView: {
     paddingVertical: 20,
-    marginTop: 50,
+    marginTop: 20,
   },
   title: {
     fontSize: 20,

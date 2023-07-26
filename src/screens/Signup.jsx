@@ -11,8 +11,12 @@ import {useDispatch, useSelector} from 'react-redux';
 
 import {TextField} from '../components/TextField';
 
-import {storeUserInfo} from '../utils/localStorage';
-import {setIsAuthenticated, setUserInfo} from '../store/userInfo';
+import {
+  storeMyInfo,
+  storeMySignupStatus,
+  storeUserInfo,
+} from '../utils/localStorage';
+import {setIsAuthenticated, setMySignup, setUserInfo} from '../store/userInfo';
 
 export function Signup() {
   const navigation = useNavigation();
@@ -93,7 +97,7 @@ export function Signup() {
       if (values?.confirmPassword?.length < 8) {
         confirmPasswordErr = `Must be atleast 8 characters!`;
       } else if (values?.createPassword !== values?.confirmPassword) {
-        confirmPasswordErr = `Password doesn't Match`;
+        confirmPasswordErr = `Password does not Match`;
       }
     } else {
       confirmPasswordErr = 'Confirm password is required';
@@ -123,15 +127,20 @@ export function Signup() {
 
   const handleSubmit = () => {
     if (isValidate()) {
-      dispatch(setUserInfo(values));
+      const payload = {
+        name: values.name,
+        email: values.email,
+        phoneNumber: values.phoneNumber,
+        password: values.createPassword,
+      };
+
+      dispatch(setUserInfo(payload));
       dispatch(setIsAuthenticated(true));
-      // storeUserInfo(values);
-
-      // navigation.navigate('MainScreen');
-
-      // console.log('validation done', values);
-    } else {
-      console.log('validation error.....', values);
+      dispatch(setMySignup('True'));
+      // toLocal DB
+      storeMySignupStatus('True');
+      storeUserInfo(payload);
+      storeMyInfo(payload);
     }
   };
 
@@ -209,7 +218,7 @@ const styles = StyleSheet.create({
   },
   formView: {
     paddingVertical: 20,
-    marginTop: 50,
+    marginTop: 20,
   },
   title: {
     fontSize: 20,

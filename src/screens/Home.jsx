@@ -25,7 +25,7 @@ export function HomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <FlatList
+        {/* <FlatList
           data={data?.feed?.entry}
           renderItem={({item, index}) => {
             // console.log(
@@ -53,7 +53,7 @@ export function HomeScreen() {
               </View>
             );
           }}
-        />
+        /> */}
       </View>
     </View>
   );
