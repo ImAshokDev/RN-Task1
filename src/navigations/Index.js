@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {NavigationContainer} from '@react-navigation/native';
 import {useDispatch, useSelector} from 'react-redux';
 
@@ -9,11 +9,14 @@ import {AuthNavigator} from './AuthNavigation';
 import {MainNavigator} from './StackNavigation';
 
 import {setIsAuthenticated, setMySignup, setUserInfo} from '../store/userInfo';
+import {LoadingIndicator} from '../components/LoadingIndicator';
 
 export const AuthContext = React.createContext();
 
 export function AppNavigations() {
   const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(true);
 
   const {isAuthenticated} = useSelector(state => state.userInfo);
 
@@ -29,6 +32,8 @@ export function AppNavigations() {
       dispatch(setUserInfo(myInfo));
       dispatch(setIsAuthenticated(true));
     }
+
+    setLoading(false);
   }
 
   useEffect(() => {
@@ -37,7 +42,12 @@ export function AppNavigations() {
 
   return (
     <NavigationContainer ref={navigationRef}>
-      {isAuthenticated === true ? <MainNavigator /> : <AuthNavigator />}
+      {loading ? (
+        <LoadingIndicator />
+      ) : (
+        <>{isAuthenticated === true ? <MainNavigator /> : <AuthNavigator />}</>
+      )}
+      {/* {isAuthenticated === true ? <MainNavigator /> : <AuthNavigator />} */}
     </NavigationContainer>
   );
 }

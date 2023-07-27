@@ -12,7 +12,7 @@ export function AuthNavigator() {
 
   return (
     <Stack.Navigator
-      initialRouteName={mySignup !== 'True' ? 'Login' : 'Signup'}>
+      initialRouteName={mySignup === 'True' ? 'Login' : 'Signup'}>
       <Stack.Screen
         name="Signup"
         component={Signup}
