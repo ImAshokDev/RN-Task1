@@ -21,7 +21,6 @@ export function AppNavigations() {
   const {isAuthenticated} = useSelector(state => state.userInfo);
 
   // my profile info get from localDB and setting in redux store
-
   async function callLocalStore() {
     const myInfo = await getMyInfo();
     const signupStatus = await getMySignupStatus();
@@ -47,7 +46,6 @@ export function AppNavigations() {
       ) : (
         <>{isAuthenticated === true ? <MainNavigator /> : <AuthNavigator />}</>
       )}
-      {/* {isAuthenticated === true ? <MainNavigator /> : <AuthNavigator />} */}
     </NavigationContainer>
   );
 }
