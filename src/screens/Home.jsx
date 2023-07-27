@@ -7,10 +7,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import {LoadingIndicator} from '../components/LoadingIndicator';
 
 export function HomeScreen() {
   const [data, setData] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
 
   const cardsPerPage = 5;
   const lastIndex = currentPage * cardsPerPage;
@@ -20,9 +22,13 @@ export function HomeScreen() {
   const noOfPages = Math.ceil(data?.feed?.entry?.length / cardsPerPage);
 
   function fetchData() {
-    fetch('https://itunes.apple.com/in/rss/topalbums/limit=25/json')
+    setLoading(true);
+    fetch(`https://itunes.apple.com/in/rss/topalbums/limit=25/json`)
       .then(res => res.json())
-      .then(resData => setData(resData))
+      .then(resData => {
+        setData(resData);
+        setLoading(false);
+      })
       .catch(err => console.log('fet error......', err));
   }
 
@@ -45,103 +51,109 @@ export function HomeScreen() {
   return (
     <View style={styles.container}>
       <View style={styles.content}>
-        <FlatList
-          data={cardList}
-          renderItem={({item, index}) => {
-            return (
-              <View key={index} style={styles.cardView}>
-                <Text style={styles.text1}>{item?.['im:name']?.label}</Text>
+        {loading ? (
+          <LoadingIndicator />
+        ) : (
+          <FlatList
+            data={cardList}
+            renderItem={({item, index}) => {
+              return (
+                <View
+                  key={item?.category?.attributes?.['im:id']}
+                  style={styles.cardView}>
+                  <Text style={styles.text1}>{item?.['im:name']?.label}</Text>
 
-                <View style={styles.galleryView}>
-                  {item?.['im:image']?.map((imgItem, index2) => {
-                    return (
-                      <Image
-                        key={index2}
-                        source={{uri: imgItem.label}}
-                        alt="image"
-                        style={[styles.imgStyle]}
-                      />
-                    );
-                  })}
+                  <View style={styles.galleryView}>
+                    {item?.['im:image']?.map((imgItem, index2) => {
+                      return (
+                        <Image
+                          key={index2}
+                          source={{uri: imgItem.label}}
+                          alt="image"
+                          style={[styles.imgStyle]}
+                        />
+                      );
+                    })}
+                  </View>
+                </View>
+              );
+            }}
+            ListHeaderComponent={() => (
+              <View style={styles.contentHeaderView}>
+                <View style={styles.textRowView}>
+                  <Text style={[styles.textLeft]}>Total Entries: </Text>
+                  <Text style={[styles.textLeft, styles.textRight]}>
+                    {data?.feed?.entry?.length}
+                  </Text>
+                </View>
+                <View style={styles.textRowView}>
+                  <Text style={[styles.textLeft]}>Entries Per Page: </Text>
+                  <Text style={[styles.textLeft, styles.textRight]}>
+                    {cardsPerPage}
+                  </Text>
+                </View>
+                <View style={styles.textRowView}>
+                  <Text style={[styles.textLeft]}>No of Pages: </Text>
+                  <Text style={[styles.textLeft, styles.textRight]}>
+                    {noOfPages}
+                  </Text>
+                </View>
+                <View style={styles.textRowView}>
+                  <Text style={[styles.textLeft]}>Current Page: </Text>
+                  <Text style={[styles.textLeft, styles.textRight]}>
+                    {currentPage}
+                  </Text>
                 </View>
               </View>
-            );
-          }}
-          ListHeaderComponent={() => (
-            <View style={styles.contentHeaderView}>
-              <View style={styles.textRowView}>
-                <Text style={[styles.textLeft]}>Total Entries: </Text>
-                <Text style={[styles.textLeft, styles.textRight]}>
-                  {data?.feed?.entry?.length}
-                </Text>
-              </View>
-              <View style={styles.textRowView}>
-                <Text style={[styles.textLeft]}>Entries Per Page: </Text>
-                <Text style={[styles.textLeft, styles.textRight]}>
-                  {cardsPerPage}
-                </Text>
-              </View>
-              <View style={styles.textRowView}>
-                <Text style={[styles.textLeft]}>No of Pages: </Text>
-                <Text style={[styles.textLeft, styles.textRight]}>
-                  {noOfPages}
-                </Text>
-              </View>
-              <View style={styles.textRowView}>
-                <Text style={[styles.textLeft]}>Current Page: </Text>
-                <Text style={[styles.textLeft, styles.textRight]}>
-                  {currentPage}
-                </Text>
-              </View>
-            </View>
-          )}
-          ListFooterComponent={() => (
-            <View style={styles.btnView}>
-              <TouchableOpacity
-                disabled={currentPage <= 1 ? true : false}
-                activeOpacity={0.5}
-                onPress={moveToPrev}
-                style={[
-                  styles.btn,
-                  {
-                    backgroundColor: currentPage <= 1 ? '#CDE1EC' : '#0369A1',
-                  },
-                ]}>
-                <Text
+            )}
+            ListFooterComponent={() => (
+              <View style={styles.btnView}>
+                <TouchableOpacity
+                  disabled={currentPage <= 1 ? true : false}
+                  activeOpacity={0.5}
+                  onPress={moveToPrev}
                   style={[
-                    styles.btnText,
+                    styles.btn,
                     {
-                      color: currentPage <= 1 ? '#0369A1' : '#ffffff',
+                      backgroundColor: currentPage <= 1 ? '#CDE1EC' : '#0369A1',
                     },
                   ]}>
-                  previous
-                </Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                disabled={currentPage >= noOfPages ? true : false}
-                activeOpacity={0.5}
-                onPress={moveToNext}
-                style={[
-                  styles.btn,
-                  styles.btn2,
-                  {
-                    backgroundColor:
-                      currentPage >= noOfPages ? '#CDE1EC' : '#0369A1',
-                  },
-                ]}>
-                <Text
+                  <Text
+                    style={[
+                      styles.btnText,
+                      {
+                        color: currentPage <= 1 ? '#0369A1' : '#ffffff',
+                      },
+                    ]}>
+                    previous
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  disabled={currentPage >= noOfPages ? true : false}
+                  activeOpacity={0.5}
+                  onPress={moveToNext}
                   style={[
-                    styles.btnText,
+                    styles.btn,
+                    styles.btn2,
                     {
-                      color: currentPage >= noOfPages ? '#0369A1' : '#ffffff',
+                      backgroundColor:
+                        currentPage >= noOfPages ? '#CDE1EC' : '#0369A1',
                     },
                   ]}>
-                  Next
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        />
+                  <Text
+                    style={[
+                      styles.btnText,
+                      {
+                        color: currentPage >= noOfPages ? '#0369A1' : '#ffffff',
+                      },
+                    ]}>
+                    Next
+                  </Text>
+                </TouchableOpacity>
+              </View>
+            )}
+          />
+        )}
       </View>
     </View>
   );
