@@ -41,4 +41,4 @@ Signin functionality
 
 ##### Change Passowrd
 
-- Can be change passowrd of current login user's
+- Can be change password of current login user
